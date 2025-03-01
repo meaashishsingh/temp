@@ -30,10 +30,23 @@ console.log('here env', process.env.NODE_ENV);
 if(process.env.NODE_ENV === 'production') {
     origin = process.env.CLIENT_ORIGIN;
 }
+// app.use(
+//     cors({
+//         credentials: true,
+//         origin
+//     })
+// );
+
+
 app.use(
     cors({
         credentials: true,
-        origin
+        origin: (origin, callback) => {
+            callback(null, true); // Dynamically allow all origins
+        },
+        allowedHeaders: ["Content-Type", "Authorization"], // Allow sending tokens in headers
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow specific HTTP methods
+        optionsSuccessStatus: 200 // Prevents preflight errors in some browsers
     })
 );
 
